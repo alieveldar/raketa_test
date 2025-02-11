@@ -1,36 +1,77 @@
 <?php
 
-declare(strict_types = 1);
+    declare(strict_types=1);
 
-namespace Raketa\BackendTestTask\Domain;
+    namespace Raketa\BackendTestTask\Domain;
 
-final readonly class CartItem
-{
-    public function __construct(
-        public string $uuid,
-        public string $productUuid,
-        public float $price,
-        public int $quantity,
-    ) {
-    }
+    /**
+     * Represents an item in the shopping cart.
+     *
+     * This class defines the properties of an individual item in the cart, including the item's UUID,
+     * associated product UUID, price, and quantity. It provides methods to access these properties
+     * and implements `JsonSerializable` for converting the item into a JSON-compatible format.
+     *
+     * @package Raketa\BackendTestTask\Domain
+     */
 
-    public function getUuid(): string
+    final readonly class CartItem implements \JsonSerializable
     {
-        return $this->uuid;
-    }
+        /**
+         * @param string $uuid
+         * @param string $productUuid
+         * @param float $price
+         * @param int $quantity
+         */
+        public function __construct(
+            private string $uuid,
+            private string $productUuid,
+            private float $price,
+            private int $quantity,
+        ) {
+        }
 
-    public function getProductUuid(): string
-    {
-        return $this->productUuid;
-    }
+        /**
+         * @return string
+         */
+        public function getUuid(): string
+        {
+            return $this->uuid;
+        }
 
-    public function getPrice(): float
-    {
-        return $this->price;
-    }
+        /**
+         * @return string
+         */
+        public function getProductUuid(): string
+        {
+            return $this->productUuid;
+        }
 
-    public function getQuantity(): int
-    {
-        return $this->quantity;
+        /**
+         * @return float
+         */
+        public function getPrice(): float
+        {
+            return $this->price;
+        }
+
+        /**
+         * @return int
+         */
+        public function getQuantity(): int
+        {
+            return $this->quantity;
+        }
+
+        /**
+         * @return array
+         */
+        public function jsonSerialize(): array
+        {
+            return [
+                'uuid' => $this->uuid,
+                'productUuid' => $this->productUuid,
+                'price' => $this->price,
+                'quantity' => $this->quantity,
+            ];
+        }
     }
-}
